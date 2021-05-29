@@ -1,2 +1,2 @@
-# neural-network
-A neural network written in C++
+# Deepnest
+A neural network framework written in C++
