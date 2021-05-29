@@ -2,14 +2,7 @@
 #define __NETWORK_
 
 #include <vector>
-
-typedef std::vector<double> Data;
-typedef std::vector<Data> Data2d;
-typedef double (*Activation)(double x);
-
-typedef enum {
-  NONE, RELU, TANH, SIGMOID, SOFTMAX
-} Activ;
+#include "network_types.hpp"
 
 class Network;
 class Layer;
@@ -46,14 +39,13 @@ class Layer {
     void update_delta(const Data2d &next_delta, const Data2d &next_weights);
     void update_weights(const Data2d &new_weights);
     void set_delta(const Data2d &__delta);
+    const Data2d &compute_output(const Data2d &batch);
 
   public:
     Layer(const std::vector<Neuron> &__neurons) : neurons(__neurons) {}
-
     const Data2d &get_delta() const;
     const Data2d &get_output() const;
     const Data2d &get_weight_delta() const;
-    const Data2d &compute_output(const Data2d &batch);
     int size(void) const;
     Data2d to_matrix(void) const;
     Layer &set_activation(Activ activation);
@@ -61,28 +53,29 @@ class Layer {
 };
 
 class Network {
-  friend class Layer;
-  std::vector<Layer> layers;
-  int network_input_size;
+  private:
+    friend class Layer;
+    std::vector<Layer> layers;
+    int network_input_size;
 
-  void update_hidden_layers_deltas(const Data2d &network_input);
-  void update_hidden_layers_weights(double alpha);
+    void update_hidden_layers_deltas(const Data2d &network_input);
+    void update_hidden_layers_weights(double alpha);
 
-  static double relu(double x);
-  static double relu_deriv(double x);
+    static double relu(double x);
+    static double relu_deriv(double x);
 
-  static double tanh(double x);
-  static double tanh_deriv(double x);
+    static double tanh(double x);
+    static double tanh_deriv(double x);
 
-  static double sigmoid(double x);
-  static double sigmoid_deriv(double x);
+    static double sigmoid(double x);
+    static double sigmoid_deriv(double x);
 
-  static double softmax(double x);
-  static double softmax_deriv(double x);
+    static double softmax(double x);
+    static double softmax_deriv(double x);
 
-  static Data2d &activate(Data2d &data, Activation activation);
+    static Data2d &activate(Data2d &data, Activation activation);
 
-  Data2d __predict(const Data2d &batch, bool training);
+    Data2d __predict(const Data2d &batch, bool training);
 
   public:
     Network(int __size) : network_input_size(__size) {}
@@ -99,23 +92,5 @@ class Network {
     void save_weights(const std::string &path) const;
     void load_weights(const std::string &path);
 };
-
-Data vec_sub(const Data &v1, const Data &v2);
-Data vec_mul(const Data &v1, const Data &v2);
-Data vec_mul(const Data &v, double scalar);
-Data vec_div(const Data &v, double scalar);
-Data vec_add(const Data &v1, const Data &v2);
-double vec_reduce_sum(const Data &v);
-Data2d vec_outer(const Data &v1, const Data &v2);
-Data vec_mat_mul(const Data &v, const Data2d &m);
-Data2d mat_mul(const Data2d &m1, double scalar);
-Data2d mat_mul(const Data2d &m1, const Data2d &m2);
-Data2d transpose(const Data2d &m);
-Data2d mat_multiply(const Data2d &m1, const Data2d &m2);
-Data2d mat_sub(const Data2d &m1, const Data2d &m2);
-Data2d mat_add(const Data2d &m1, const Data2d &m2);
-double mat_reduce_sum(const Data2d &m);
-std::string to_str(const Data2d &m);
-std::string to_str(const Data &v);
 
 #endif // __NETWORK_
