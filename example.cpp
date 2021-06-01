@@ -13,9 +13,9 @@ typedef std::vector<std::vector<double>> Matrix;
 int main(void) {
   // init a network with 3 inputs
   Network network(3);
-  // a hidden layer with 5 neurons with weights between 0 and 1
-  network.add_layer(5, 0, 1, Activ::RELU);
-  // a layer with 3 outputs
+  // a hidden layer with 10 neurons and ReLU activation function
+  network.add_layer(10, Activ::RELU);
+  // a layer with 3 neurons (outputs)
   network.add_layer(3);
 
   const Matrix inputs = {
@@ -30,7 +30,7 @@ int main(void) {
     {50, 20, 240},
   };
 
-  const Matrix outputs = {
+  const Matrix expected_outputs = {
     {1, 0, 0},
     {0, 1, 0},
     {0, 0, 1},
@@ -42,10 +42,9 @@ int main(void) {
     {0, 0, 1},
   };
 
-  int epochs = 100;
-  double alpha = 0.000001;
+  int epochs = 30;
   int batch_size = 3;
-  network.train(epochs, alpha, batch_size, inputs, outputs); // start fitting the network
+  network.train(epochs, batch_size, inputs, expected_outputs); // start fitting the network
 
   const Matrix colors = {
     {250, 15, 20}, // red

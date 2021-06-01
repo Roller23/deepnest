@@ -246,7 +246,7 @@ void Network::update_hidden_layers_weights(double alpha) {
   }
 }
 
-void Network::train(size_t epochs, double alpha, size_t batch_size, const Data2d &inputs, const Data2d &expected) {
+void Network::train(size_t epochs, size_t batch_size, const Data2d &inputs, const Data2d &expected, double alpha) {
   assert(batch_size != 0 && "Batch size cannot be 0");
   int layers_size = layers.size();
   if (layers_size == 0) return;

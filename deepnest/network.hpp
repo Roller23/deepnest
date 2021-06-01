@@ -14,7 +14,6 @@ class Neuron {
     Data weights;
   public:
     Neuron(const Data &__weights) : weights(__weights) {}
-
     double get_output(const Data &inputs) const;
 };
 
@@ -83,10 +82,10 @@ class Network {
       : network_input_size(__size), layers(__layers) {}
 
     Layer &add_layer(const std::vector<Neuron> &__neurons, Activ activation = Activ::NONE);
-    Layer &add_layer(const Layer &__layer, Activ activation =  Activ::NONE);
-    Layer &add_layer(int n, double min_weight = 0.0, double max_weight = 1.0, Activ activation =  Activ::NONE);
+    Layer &add_layer(const Layer &__layer, Activ activation = Activ::NONE);
+    Layer &add_layer(int n, double min_weight = 0.0, double max_weight = 1.0, Activ activation = Activ::NONE);
     const Layer &get_layer(size_t idx) const;
-    void train(size_t epochs, double alpha, size_t batch_size, const Data2d &inputs, const Data2d &expected);
+    void train(size_t epochs, size_t batch_size, const Data2d &inputs, const Data2d &expected, double alpha = 0.000001);
     Data2d predict(const Data2d &batch);
 
     void save_weights(const std::string &path) const;
