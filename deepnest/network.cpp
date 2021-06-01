@@ -226,7 +226,7 @@ Layer &Network::add_layer(int n, double min_weight, double max_weight, Activ act
 }
 
 const Layer &Network::get_layer(size_t idx) const {
-  return layers[idx];
+  return layers.at(idx);
 }
 
 void Network::update_hidden_layers_deltas(const Data2d &network_input) {
