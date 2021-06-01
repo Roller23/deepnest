@@ -2,6 +2,7 @@
 #define __NETWORK_
 
 #include <vector>
+#include <string>
 #include "network_types.hpp"
 
 class Network;

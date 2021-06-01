@@ -1,5 +1,6 @@
 #include <cassert>
 #include <sstream>
+#include <string>
 
 #include "utils.hpp"
 #include "network_types.hpp"
