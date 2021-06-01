@@ -4,19 +4,21 @@
 
 #include "deepnest/network.hpp"
 
-const char *colors_lut[] = {
+static const char *colors_lut[] = {
   "red", "green", "blue"
 };
 
+typedef std::vector<std::vector<double>> Matrix;
+
 int main(void) {
   // init a network with 3 inputs
-  Network n(3);
-  // a hidden layer with 10 neurons with weights between 0 and 1
-  n.add_layer(10, 0, 1, Activ::RELU);
+  Network network(3);
+  // a hidden layer with 5 neurons with weights between 0 and 1
+  network.add_layer(5, 0, 1, Activ::RELU);
   // a layer with 3 outputs
-  n.add_layer(3);
+  network.add_layer(3);
 
-  const std::vector<std::vector<double>> inputs = {
+  const Matrix inputs = {
     {255, 0, 0},
     {0, 255, 0},
     {0, 0, 255},
@@ -28,7 +30,7 @@ int main(void) {
     {50, 20, 240},
   };
 
-  const std::vector<std::vector<double>> outputs = {
+  const Matrix outputs = {
     {1, 0, 0},
     {0, 1, 0},
     {0, 0, 1},
@@ -40,19 +42,21 @@ int main(void) {
     {0, 0, 1},
   };
 
-  // train for 100 epochs, alpha = 0.000001, batch size = 3
-  n.train(100, 0.000001, 3, inputs, outputs);
+  int epochs = 100;
+  double alpha = 0.000001;
+  int batch_size = 3;
+  network.train(epochs, alpha, batch_size, inputs, outputs); // start fitting the network
 
-  const std::vector<std::vector<double>> colors = {
+  const Matrix colors = {
     {250, 15, 20}, // red
     {11, 254, 40}, // green
     {36, 24, 245}, // blue
   };
 
-  const std::vector<std::vector<double>> &prediction = n.predict(colors);
+  const Matrix &prediction = network.predict(colors);
   for (const auto &row : prediction) {
     int index = std::distance(row.begin(), std::max_element(row.begin(), row.end()));
-    std::cout << "predicted: " << colors_lut[index] << std::endl;
+    std::cout << "Network predicted: " << colors_lut[index] << std::endl;
   }
   return 0;
 }
